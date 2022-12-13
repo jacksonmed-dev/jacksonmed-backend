@@ -4,22 +4,22 @@ import {
     RequiredParameterError
 } from '../../helpers/error.js'
 import makeHttpsError from '../../helpers/https-error.js'
-import makeSensorData from './sensor-data-model.js'
 import {infoLogger} from "../../logger/logger.js";
+import makePatient from "./patient-model.js";
 
 const FILE_NAME = 'patient-endpoint-handler.js'
 
-export default function makeSensorDataEndpointHandler({ repository: sensorDataRepository }) {
+export default function makePatientEndpointHandler({ repository: patientRepository }) {
     return async function handle(httpsRequest) {
         switch(httpsRequest.method) {
             case "POST":
-                return postSensorData(httpsRequest)
+                return postPatient(httpsRequest)
             case "GET":
-                return getSensorData(httpsRequest)
+                return getPatient(httpsRequest)
             case "PUT":
-                return putSensorData(httpsRequest)
+                return putPatient(httpsRequest)
             case "DELETE":
-                return deleteSensorData(httpsRequest)
+                return deletePatient(httpsRequest)
             default:
                 return makeHttpsError({
                     statusCode: 405,
@@ -28,12 +28,12 @@ export default function makeSensorDataEndpointHandler({ repository: sensorDataRe
         }
     }
 
-    async function postSensorData(httpsRequest) {
-        const METHOD = 'postSensorData'
+    async function postPatient(httpsRequest) {
+        const METHOD = 'postPatient'
         infoLogger.debug(FILE_NAME, METHOD, "httpsRequest: ", httpsRequest)
 
-        let sensorDataInfo = httpsRequest.body
-        if (!sensorDataInfo) {
+        let patientInfo = httpsRequest.body
+        if (!patientInfo) {
             return makeHttpsError({
                 statusCode: 400,
                 errorMessage: 'Bad request. No POST body.'
@@ -42,7 +42,7 @@ export default function makeSensorDataEndpointHandler({ repository: sensorDataRe
 
         if (typeof httpsRequest.body === 'string') {
             try {
-                sensorDataInfo = JSON.parse(sensorDataInfo)
+                patientInfo = JSON.parse(patientInfo)
             } catch {
                 return makeHttpsError({
                     statusCode: 400,
@@ -52,10 +52,10 @@ export default function makeSensorDataEndpointHandler({ repository: sensorDataRe
         }
 
         try {
-            const sensorData = makeSensorData(sensorDataInfo)
-            infoLogger.debug(FILE_NAME, METHOD, "sensorData: ", sensorData)
+            const patient = makePatient(patientInfo)
+            infoLogger.debug(FILE_NAME, METHOD, "patient: ", patient)
 
-            const { success, result } = await sensorDataRepository.add(sensorData)
+            const { success, result } = await patientRepository.add(patient)
             return {
                 headers: httpsRequest.headers,
                 statusCode: 201,
@@ -76,18 +76,18 @@ export default function makeSensorDataEndpointHandler({ repository: sensorDataRe
         }
     }
 
-    async function getSensorData(httpsRequest) {
-        const { sensorDataId } = httpsRequest.pathParams || {}
-
-        if(sensorDataId) {
-            const result = sensorDataId ? await sensorDataRepository.findBySensorDataId(sensorDataId) : null
+    async function getPatient(httpsRequest) {
+        const { firstName, lastName, birthday } = httpsRequest.queryParams || {}
+        const patientId = {firstName, lastName, birthday}
+        if(patientId) {
+            const result = patientId ? await patientRepository.findByPatientId(patientId) : null
             return {
                 headers: httpsRequest.headers,
                 statusCode: 200,
                 data: JSON.stringify(result)
             }
         }else {
-            const result =  await sensorDataRepository.getAll()
+            const result =  await patientRepository.getAll()
             return {
                 headers: httpsRequest.headers,
                 statusCode: 200,
@@ -97,9 +97,9 @@ export default function makeSensorDataEndpointHandler({ repository: sensorDataRe
 
     }
 
-    async function putSensorData(httpsRequest) {
-        let generatedLeadInfo = httpsRequest.body
-        if (!generatedLeadInfo) {
+    async function putPatient(httpsRequest) {
+        let patientInfo = httpsRequest.body
+        if (!patientInfo) {
             return makeHttpsError({
                 statusCode: 400,
                 errorMessage: 'Bad request. No PUT body.'
@@ -108,7 +108,7 @@ export default function makeSensorDataEndpointHandler({ repository: sensorDataRe
 
         if (typeof httpsRequest.body === 'string') {
             try {
-                generatedLeadInfo = JSON.parse(generatedLeadInfo)
+                patientInfo = JSON.parse(patientInfo)
             } catch {
                 return makeHttpsError({
                     statusCode: 400,
@@ -117,8 +117,8 @@ export default function makeSensorDataEndpointHandler({ repository: sensorDataRe
             }
         }
         try {
-            const sensorData = makeSensorData(generatedLeadInfo)
-            const { success, result } = await sensorDataRepository.update(sensorData)
+            const patient = makeSensorData(patientInfo)
+            const { success, result } = await patientRepository.update(patient)
             return {
                 headers: httpsRequest.headers,
                 statusCode: 200,
@@ -138,10 +138,10 @@ export default function makeSensorDataEndpointHandler({ repository: sensorDataRe
         }
     }
 
-    async function deleteSensorData(httpsRequest) {
-        const { sensorDataId } = httpsRequest.pathParams || {}
+    async function deletePatient(httpsRequest) {
+        const { patientId } = httpsRequest.pathParams || {}
 
-        const result = sensorDataId ? await sensorDataRepository.remove(sensorDataId) : null
+        const result = patientId ? await patientRepository.remove(patientId) : null
         return {
             headers: httpsRequest.headers,
             statusCode: 200,

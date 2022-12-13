@@ -1,9 +1,9 @@
 import requiredParam from "../../helpers/required-param.js";
 import optionalParam from "../../helpers/optional-param.js";
 import {infoLogger} from "../../logger/logger.js";
-const FILE_NAME="sensor-data-model.js"
+const FILE_NAME="patient-model.js"
 
-// Generated Lead Model.
+// Patient Model.
 // Validates non-nullness for minimum necessary values and returns an immutable generated lead
 // object so properties cannot be modified, added, or deleted downstream
 export default function makeSensorData(

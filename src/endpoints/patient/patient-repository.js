@@ -1,6 +1,6 @@
 import {
     generateDeleteQuery,
-    generateGetAllQuery,
+    generateGetAllQuery, generateGetPatientQuery,
     generateGetQuery,
     generatePostQuery,
     generatePutPatchQuery
@@ -9,21 +9,21 @@ import {infoLogger} from "../../logger/logger.js";
 
 //Repository manages database queries called from the Endpoint Handler.
 //HTTPS requests will have already been validated before getting to this point.
-const FILE_NAME = "sensor-data-repository.js"
-const table_name = "sensor_data"
+const FILE_NAME = "patient-repository.js"
+const table_name = "patient"
 
-export default function sensorDataRepository ({ database }) {
+export default function patientRepository ({ database }) {
     return Object.freeze({
         add,
         getAll,
-        findBySensorDataId,
+        findByPatientId,
         remove,
         update
     })
 
-    async function add(sensorData) {
+    async function add(patient) {
         const METHOD = "add"
-        const sqlQuery = generatePostQuery(table_name, sensorData)
+        const sqlQuery = generatePostQuery(table_name, patient)
         return new Promise(function (resolve, reject) {
             database.query(sqlQuery, (error, results) => {
                 if (error) {
@@ -31,7 +31,7 @@ export default function sensorDataRepository ({ database }) {
                     reject(error)
                 }
                 resolve({
-                    data: results?.rows
+                    data: results
                 })
             })
         })
@@ -53,8 +53,8 @@ export default function sensorDataRepository ({ database }) {
         })
     }
 
-    async function findBySensorDataId(sensorDataId) {
-        const sqlQuery = generateGetQuery(table_name, sensorDataId)
+    async function findByPatientId(patientId) {
+        const sqlQuery = generateGetPatientQuery(table_name, patientId)
         return new Promise(function (resolve, reject) {
             database.query(sqlQuery, (error, results) => {
                 if (error) {
@@ -65,14 +65,14 @@ export default function sensorDataRepository ({ database }) {
                     })
                 }
                 resolve({
-                    data: results
+                    data: results?.rows
                 })
             })
         })
     }
 
-    async function update(sensorData) {
-        const sqlQuery = generatePutPatchQuery(table_name, sensorData, "sensorDataId")
+    async function update(patient) {
+        const sqlQuery = generatePutPatchQuery(table_name, patient, "patientId")
         return new Promise(function (resolve, reject) {
             database.query(sqlQuery, (error, results) => {
                 if (error) {
@@ -85,8 +85,8 @@ export default function sensorDataRepository ({ database }) {
         })
     }
 
-    async function remove(sensorDataId) {
-        const sqlQuery = generateDeleteQuery("generated_lead", sensorDataId)
+    async function remove(patientId) {
+        const sqlQuery = generateDeleteQuery("patient", patientId)
         return new Promise(function (resolve, reject) {
             database.query(sqlQuery, (error, results) => {
                 if (error) {

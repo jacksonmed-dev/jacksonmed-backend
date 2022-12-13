@@ -15,7 +15,7 @@ import {
 } from "./logger/logger.js";
 
 import makeSensorDataService from "./endpoints/sensor-data/index.js";
-import * as bodyParser from "express";
+import makePatientService from "./endpoints/patient/index.js";
 
 const FILE_NAME = "app.js"
 
@@ -26,6 +26,7 @@ export default function makeApp(database) {
 
     //create the endpoint handlers
     const sensorDataEndpointHandler = makeSensorDataService(database)
+    const patientEndpointHandler = makePatientService(database)
     //marketing-platform-service directory start
 
     // view engine setup
@@ -51,6 +52,27 @@ export default function makeApp(database) {
     function sensorDataController(req, res) {
         const httpsRequest = adaptRequest(req)
         sensorDataEndpointHandler(httpsRequest)
+            .then(({headers, statusCode, data}) =>
+                res.set(headers)
+                    .status(statusCode)
+                    .send(data)
+            )
+            .catch(({headers, statusCode, data}) => {
+                infoLogger.error(FILE_NAME, METHOD, "Error Caught: ", data)
+                res.set(headers)
+                    .status(statusCode)
+                    .send(data)
+                    .end()
+            })
+    }
+
+    app.post('/patient', patientController)
+    app.get('/patient', patientController)
+    app.put('/patient', patientController)
+    app.delete('/patient', patientController)
+    function patientController(req, res) {
+        const httpsRequest = adaptRequest(req)
+        patientEndpointHandler(httpsRequest)
             .then(({headers, statusCode, data}) =>
                 res.set(headers)
                     .status(statusCode)

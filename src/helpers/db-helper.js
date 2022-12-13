@@ -19,6 +19,10 @@ export function generateGetQuery(tableName, searchKey) {
     return `SELECT * FROM ${tableName} WHERE ${camelToSnakeCase(Object.keys({searchKey})[0])} = searchKey`
 }
 
+export function generateGetPatientQuery(tableName, patientId) {
+    return `SELECT * FROM ${tableName} WHERE first_name='${patientId.firstName}' and last_name='${patientId.lastName}' and birthday='${patientId.birthday}'`
+}
+
 export function generateGetAllQuery(tableName) {
     return `SELECT * FROM ${tableName}`
 }
