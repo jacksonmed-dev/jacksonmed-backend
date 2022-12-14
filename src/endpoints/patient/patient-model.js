@@ -28,12 +28,12 @@ export default function makePatient(
 
                       } = {}) {
         return {
-            firstName: firstName.toLowerCase(),
-            lastName: lastName.toLowerCase(),
-            birthday: birthday.toLowerCase(),
-            height: height.toLowerCase(),
-            weight: weight.toLowerCase(),
-            sex: sex.toLowerCase()
+            firstName: firstName?.toLowerCase(),
+            lastName: lastName?.toLowerCase(),
+            birthday: birthday?.toLowerCase(),
+            height: height?.toLowerCase(),
+            weight: weight?.toLowerCase(),
+            sex: sex?.toLowerCase()
         }
     }
 }
