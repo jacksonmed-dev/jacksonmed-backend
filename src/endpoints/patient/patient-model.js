@@ -26,8 +26,7 @@ export default function makePatient(
                           weight = optionalParam(),
                           sex = optionalParam(),
                           birthday = requiredParam('birthday'),
-                          bradenScale = optionalParam(),
-                          nortonScale = optionalParam(),
+                          bedsoreRisk = optionalParam(),
                           fallRisk = optionalParam(),
 
 
@@ -40,8 +39,7 @@ export default function makePatient(
             weight: weight?.toLowerCase(),
             sex: sex?.toLowerCase(),
             birthday: birthday?.toLowerCase(),
-            bradenScale,
-            nortonScale,
+            bedsoreRisk,
             fallRisk
         }
     }
