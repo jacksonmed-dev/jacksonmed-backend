@@ -28,6 +28,10 @@ export default function makePatient(
                           birthday = requiredParam('birthday'),
                           bedsoreRisk = optionalParam(),
                           fallRisk = optionalParam(),
+                          sensor_id = optionalParam(),
+                          facility_id = optionalParam(),
+                          provider_id = optionalParam(),
+
 
 
                       } = {}) {
@@ -40,7 +44,10 @@ export default function makePatient(
             sex: sex?.toLowerCase(),
             birthday: birthday?.toLowerCase(),
             bedsoreRisk,
-            fallRisk
+            fallRisk,
+            sensor_id,
+            facility_id,
+            provider_id
         }
     }
 }
