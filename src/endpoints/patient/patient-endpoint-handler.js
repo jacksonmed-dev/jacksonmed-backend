@@ -117,7 +117,7 @@ export default function makePatientEndpointHandler({ repository: patientReposito
             }
         }
         try {
-            const patient = makeSensorData(patientInfo)
+            const patient = makePatient(patientInfo)
             const { success, result } = await patientRepository.update(patient)
             return {
                 headers: httpsRequest.headers,

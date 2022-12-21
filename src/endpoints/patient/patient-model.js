@@ -19,21 +19,30 @@ export default function makePatient(
     return Object.freeze(validPatient)
 
     function validate({
+                          roomId = requiredParam('room_id'),
                           firstName = requiredParam('first_name'),
                           lastName = requiredParam('last_name'),
-                          birthday = requiredParam('birthday'),
                           height = optionalParam(),
                           weight = optionalParam(),
-                          sex = optionalParam()
+                          sex = optionalParam(),
+                          birthday = requiredParam('birthday'),
+                          bradenScale = optionalParam(),
+                          nortonScale = optionalParam(),
+                          fallRisk = optionalParam(),
+
 
                       } = {}) {
         return {
+            roomId,
             firstName: firstName?.toLowerCase(),
             lastName: lastName?.toLowerCase(),
-            birthday: birthday?.toLowerCase(),
             height: height?.toLowerCase(),
             weight: weight?.toLowerCase(),
-            sex: sex?.toLowerCase()
+            sex: sex?.toLowerCase(),
+            birthday: birthday?.toLowerCase(),
+            bradenScale,
+            nortonScale,
+            fallRisk
         }
     }
 }
