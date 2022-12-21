@@ -7,7 +7,7 @@ const FILE_NAME="patient-model.js"
 // Patient Model.
 // Validates non-nullness for minimum necessary values and returns an immutable generated lead
 // object so properties cannot be modified, added, or deleted downstream
-export default function makePatient(
+export default function makeProviders(
     patientInfo = requiredParam('patientInfo')
 ) {
     const METHOD = 'makePatient'
@@ -19,28 +19,20 @@ export default function makePatient(
     return Object.freeze(validPatient)
 
     function validate({
-                          roomId = requiredParam('room_id'),
+                          providerId = requiredParam('provider_id'),
                           firstName = requiredParam('first_name'),
                           lastName = requiredParam('last_name'),
-                          height = optionalParam(),
-                          weight = optionalParam(),
-                          sex = optionalParam(),
-                          birthday = requiredParam('birthday'),
-                          bedsoreRisk = optionalParam(),
-                          fallRisk = optionalParam(),
-
-
+                          role = requiredParam("role"),
+                          isPresent = optionalParam(),
+                          facilityId = requiredParam("facility_id"),
                       } = {}) {
         return {
-            roomId,
+            providerId,
             firstName: firstName?.toLowerCase(),
             lastName: lastName?.toLowerCase(),
-            height: height?.toLowerCase(),
-            weight: weight?.toLowerCase(),
-            sex: sex?.toLowerCase(),
-            birthday: birthday?.toLowerCase(),
-            bedsoreRisk,
-            fallRisk
+            role: role?.toLowerCase(),
+            isPresent,
+            facilityId
         }
     }
 }
