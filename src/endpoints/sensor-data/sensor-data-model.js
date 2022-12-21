@@ -1,7 +1,7 @@
 import requiredParam from "../../helpers/required-param.js";
 import optionalParam from "../../helpers/optional-param.js";
 import {infoLogger} from "../../logger/logger.js";
-const FILE_NAME="patient-model.js"
+const FILE_NAME="sensor-data-model.js"
 
 // Patient Model.
 // Validates non-nullness for minimum necessary values and returns an immutable generated lead
