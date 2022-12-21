@@ -17,21 +17,28 @@ export default function makeSensorData(
     return Object.freeze(validSensorData)
 
     function validate({
+                          sensorDataId = requiredParam('sensor_data_id'),
                           date = requiredParam('ad_account_id'),
                           hour = requiredParam('ad_id'),
                           min = requiredParam('ad_set_id'),
                           sec = requiredParam('campaign_id'),
                           data = requiredParam('data'),
-                          patient_present = requiredParam('patient_present')
-
+                          patient_present = requiredParam('patient_present'),
+                          firstName = requiredParam('first_name'),
+                          lastName = requiredParam('last_name'),
+                          birthday = requiredParam('birthday'),
                       } = {}) {
         return {
+            sensorDataId,
             date,
             hour,
             min,
             sec,
             data,
-            patient_present
+            patient_present,
+            firstName,
+            lastName,
+            birthday
         }
     }
 }
