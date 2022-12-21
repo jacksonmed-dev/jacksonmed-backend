@@ -8,15 +8,15 @@ const FILE_NAME="patient-model.js"
 // Validates non-nullness for minimum necessary values and returns an immutable generated lead
 // object so properties cannot be modified, added, or deleted downstream
 export default function makeProviders(
-    patientInfo = requiredParam('patientInfo')
+    providersInfo = requiredParam('providersInfo')
 ) {
-    const METHOD = 'makePatient'
+    const METHOD = 'makeProviders'
     infoLogger.debug(FILE_NAME, METHOD, "ENTERING: ")
-    patientInfo = toCamel(patientInfo)
-    const validPatient = validate(patientInfo)
-    infoLogger.debug(FILE_NAME, METHOD, "validPatient: ", validPatient)
+    providersInfo = toCamel(providersInfo)
+    const validProviders = validate(providersInfo)
+    infoLogger.debug(FILE_NAME, METHOD, "validProviders: ", validProviders)
 
-    return Object.freeze(validPatient)
+    return Object.freeze(validProviders)
 
     function validate({
                           providerId = requiredParam('provider_id'),
